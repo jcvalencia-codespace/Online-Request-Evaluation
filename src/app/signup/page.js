@@ -188,7 +188,7 @@ export default function Signup() {
     const inputClasses = "mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400";
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-blue-500 to-green-400">
+        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-700 via-green-500 via-teal-400 to-green-400 bg-[length:200%_200%] animate-[gradientMove_10s_ease_infinite] shadow-[inset_0_0_120px_rgba(0,0,0,0.25)]">
             <Loader loading={loading} />
             <ToastContainer
                 position="top-center"

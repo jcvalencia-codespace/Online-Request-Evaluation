@@ -97,7 +97,7 @@ export default function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-blue-500 to-green-400">
+        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-700 via-green-500 via-teal-400 to-green-400 bg-[length:200%_200%] animate-[gradientMove_10s_ease_infinite] shadow-[inset_0_0_120px_rgba(0,0,0,0.25)]">
             <Loader loading={loginLoading} />
             <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
 
