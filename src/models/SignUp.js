@@ -25,6 +25,29 @@ export const UserAccount = {
     }
   },
 
+  async fetchJobTitles() {
+    let connection;
+    try {
+      connection = await connectToDatabase();
+      const query = `
+        SELECT JOBTITLE, DEPARTMENT, JOBLEVEL
+        FROM [SYSTEM.JOBINFO.1]
+      `;
+
+      const result = await connection.request().query(query);
+
+      return result.recordset.map((row, index) => ({
+        id: index + 1,
+        value: row.JOBTITLE,
+        department: row.DEPARTMENT,
+        jobLevel: row.JOBLEVEL,
+      }));
+    } catch (error) {
+      console.error('Fetch job titles error:', error);
+      throw new Error('Database error: ' + error.message);
+    }
+  },
+
   async checkEmployeeIDExists(employeeid) {
     let connection;
     try {

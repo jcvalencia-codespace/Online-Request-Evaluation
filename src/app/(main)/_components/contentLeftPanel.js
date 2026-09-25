@@ -92,7 +92,8 @@ export default function ContentLeftPanel({
 
     // Dynamic filter options based on fetched statuses
     const getFilterOptions = () => {
-        const uniqueStatuses = [...new Set(allApprovals.map(a => a.status))].filter(Boolean).sort();
+        const source = allApprovals || approvals || [];
+        const uniqueStatuses = [...new Set(source.map(a => a.status))].filter(Boolean).sort();
         return [
             { value: '', label: filterType === 'purchase-request' ? 'All Statuses' : 'All Status' },
             ...uniqueStatuses.map(status => ({ value: status, label: status }))

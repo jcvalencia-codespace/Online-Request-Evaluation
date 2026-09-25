@@ -2,12 +2,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Loader from '../_components/loader';
-import { createUser, sendConfirmationEmail, checkEmailExists, checkEmployeeIDExists, sendNotification } from './_actions';
+import { createUser, checkEmailExists, checkEmployeeIDExists, sendNotification, sendConfirmationEmail } from './_actions';
 import { ToastContainer, toast } from 'react-toastify';
 import LoaderButton from '../_components/loaderButton'
 import { JobTitles, Departments, JobLevel } from '../../utils/jobConstants';
 import { Location } from '../../utils/locationConstants';
 import { generatePassword } from '../../utils/generatePassword';
+import { ArrowLeft, User, Mail, MapPin, Briefcase, Users, Key, Send } from 'lucide-react';
 
 export default function Signup() {
     const router = useRouter();
@@ -19,27 +20,29 @@ export default function Signup() {
 
     const allowedDomains = ["santehfeeds.com", "gmail.com"];
 
-    const [selectedJobId, setSelectedJobId] = useState('');
     const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedJobLevel, setSelectedJobLevel] = useState('');
 
-    const handleJobChange = (e) => {
-        const jobId = parseInt(e.target.value);
-        setSelectedJobId(jobId);
-
-        const job = JobTitles.find(j => j.id === jobId);
-        const jobTitle = job ? job.value : '';
-        const jobLevel = job ? JobLevel.find(jl => jl.id === job.jobLevelId)?.value : '';
-
-        const departmentName = job
-            ? Departments.find(d => d.id === job.departmentId)?.value
-            : '';
-
-        setSelectedDepartment(departmentName);
+    const handleJobTitleChange = (e) => {
+        const title = e.target.value;
         setFormData(prev => ({
             ...prev,
-            jobTitle: jobTitle,
-            jobLevel: jobLevel
+            jobTitle: title,
         }));
+
+        const job = JobTitles.find(j => j.value === title);
+        if (job) {
+            const jobLevel = JobLevel.find(jl => jl.id === job.jobLevelId)?.value || '';
+            const departmentName = Departments.find(d => d.id === job.departmentId)?.value || '';
+
+            setSelectedDepartment(departmentName);
+            setSelectedJobLevel(jobLevel);
+            setFormData(prev => ({
+                ...prev,
+                department: departmentName,
+                jobLevel: jobLevel,
+            }));
+        }
     };
 
     const [formData, setFormData] = useState({
@@ -61,7 +64,6 @@ export default function Signup() {
                 [name]: value,
             }));
 
-            // Check if email exists when user stops typing
             if (value) {
                 setEmailChecking(true);
                 try {
@@ -104,9 +106,7 @@ export default function Signup() {
             } else {
                 setEmployeeIdError('');
             }
-        }
-
-        else {
+        } else {
             setFormData(prev => ({
                 ...prev,
                 [name]: value,
@@ -119,7 +119,6 @@ export default function Signup() {
         setLoading(true);
 
         try {
-            // Final email check before submission
             if (formData.email) {
                 const emailCheckResult = await checkEmailExists(formData.email);
                 if (emailCheckResult.success && emailCheckResult.exists) {
@@ -128,7 +127,6 @@ export default function Signup() {
                     return;
                 }
 
-                
                 const emailDomain = formData.email.split('@')[1];
                 if (!allowedDomains.includes(emailDomain)) {
                     toast.error('Email domain is not allowed!');
@@ -141,14 +139,15 @@ export default function Signup() {
                     toast.error('This employee ID is already registered!');
                     setLoading(false);
                     return;
-                } 
+                }
 
                 const autoPassword = generatePassword();
                 const submitData = {
                     ...formData,
                     password: autoPassword,
                     jobTitle: formData.jobTitle,
-                    department: selectedDepartment
+                    department: selectedDepartment || formData.department,
+                    jobLevel: formData.jobLevel || selectedJobLevel
                 };
 
                 const res = await createUser(submitData);
@@ -186,8 +185,10 @@ export default function Signup() {
         setLoading(false);
     };
 
+    const inputClasses = "mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400";
+
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-blue-500 to-green-400 animate-gradient">
+        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-blue-500 to-green-400">
             <Loader loading={loading} />
             <ToastContainer
                 position="top-center"
@@ -198,35 +199,30 @@ export default function Signup() {
                 pauseOnHover
                 theme="colored"
             />
-            <div className="max-w-2xl w-full p-8 sm:p-10 bg-white rounded-xl shadow-2xl border border-gray-100">
-                <div className="flex items-center justify-between mb-10">
-                    <button
-                        className="text-gray-500 hover:text-gray-700 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-50"
-                        onClick={() => router.back()}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
+            <div className="w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                <div className="p-4">
+                    <div className="flex items-center">
+                        <button
+                            className="text-blue-500 hover:text-blue-700 transition-colors duration-200 p-2 rounded-lg hover:bg-white/20"
+                            onClick={() => router.back()}
                         >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center flex-1">
-                        Request Account
-                    </h2>
-
-                    <div className="w-6" />
+                            <ArrowLeft className="h-5 w-5" />
+                        </button>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-black text-center flex-1">
+                            Request Account
+                        </h2>
+                        <div className="w-6" />
+                    </div>
+                    <p className="text-blue-500 text-center text-sm mt-2">
+                        Fill in your details and submit a request for approval
+                    </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="p-8 space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label htmlFor='employeeid' className="block text-sm font-semibold text-gray-800 mb-3">
+                        <div className="space-y-1">
+                            <label htmlFor="employeeid" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <User className="text-blue-500" />
                                 Employee ID
                             </label>
                             <div className="relative">
@@ -237,8 +233,9 @@ export default function Signup() {
                                     value={formData.employeeid}
                                     onChange={handleChange}
                                     required
-                                    className={`mt-1 text-black block w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400 ${employeeIdError ? 'border-red-500' : 'border-gray-300'
+                                    className={`mt-1 text-black block w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400 ${employeeIdError ? 'border-red-500' : 'border-gray-300'
                                         }`}
+                                    placeholder="Enter your employee ID"
                                 />
                                 {employeeIdChecking && (
                                     <span className="absolute right-4 top-4 text-gray-500 text-sm font-medium">
@@ -250,11 +247,10 @@ export default function Signup() {
                                 <p className="mt-2 text-sm text-red-600 font-medium">{employeeIdError}</p>
                             )}
                         </div>
-                        <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-semibold text-gray-800 mb-3"
-                            >
+
+                        <div className="space-y-1">
+                            <label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <User className="text-blue-500" />
                                 Full Name
                             </label>
                             <input
@@ -264,13 +260,16 @@ export default function Signup() {
                                 value={formData.fullName}
                                 onChange={handleChange}
                                 required
-                                className="mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400"
+                                className={inputClasses}
+                                placeholder="Enter your full name"
                             />
                         </div>
                     </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label htmlFor="location" className="block text-sm font-semibold text-gray-800 mb-3">
+                        <div className="space-y-1">
+                            <label htmlFor="location" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <MapPin className="text-blue-500" />
                                 Location
                             </label>
                             <select
@@ -279,7 +278,7 @@ export default function Signup() {
                                 value={formData.location}
                                 onChange={handleChange}
                                 required
-                                className="mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400 appearance-none bg-white"
+                                className={inputClasses + " appearance-none bg-white"}
                             >
                                 <option value="">Select a location</option>
                                 {Location.map((loc) => (
@@ -289,65 +288,76 @@ export default function Signup() {
                                 ))}
                             </select>
                         </div>
-                        <div>
-                            <label
-                                htmlFor="jobTitle"
-                                className="block text-sm font-semibold text-gray-800 mb-3"
-                            >
+
+                        <div className="space-y-1">
+                            <label htmlFor="jobTitle" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <Briefcase className="text-blue-500" />
                                 Job Title
                             </label>
-                            <select
+                            <input
                                 id="jobTitle"
                                 name="jobTitle"
-                                value={selectedJobId}
-                                onChange={handleJobChange}
+                                type="text"
+                                value={formData.jobTitle}
+                                onChange={handleJobTitleChange}
                                 required
-                                className="mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400 appearance-none bg-white"
-                            >
-                                <option value="">Select a job</option>
+                                list="job-title-suggestions"
+                                className={inputClasses}
+                                placeholder="Start typing to see suggestions..."
+                            />
+                            <datalist id="job-title-suggestions">
                                 {JobTitles.map((job) => (
-                                    <option key={job.id} value={job.id}>
-                                        {job.value}
-                                    </option>
+                                    <option key={job.id} value={job.value} />
                                 ))}
-                            </select>
-                            <p className="mt-2 text-xs text-gray-600 font-medium">
-                                Please select your Job Title to fill Department.
+                            </datalist>
+                            <p className="mt-1 text-xs text-gray-500">
+                                Select a suggestion or type your own title
                             </p>
                         </div>
                     </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label htmlFor='department' className="block text-sm font-semibold text-gray-800 mb-3">
+                        <div className="space-y-1">
+                            <label htmlFor="department" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <Users className="text-blue-500" />
                                 Department
                             </label>
                             <input
                                 id="department"
                                 name="department"
                                 type="text"
-                                value={selectedDepartment}
-                                readOnly
+                                value={selectedDepartment || formData.department}
+                                onChange={(e) => {
+                                    setSelectedDepartment(e.target.value);
+                                    setFormData(prev => ({ ...prev, department: e.target.value }));
+                                }}
                                 required
-                                className="mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200"
+                                className={inputClasses}
+                                placeholder="Department name"
                             />
                         </div>
-                        <div>
-                            <label htmlFor='jobLevel' className="block text-sm font-semibold text-gray-800 mb-3">
+
+                        <div className="space-y-1">
+                            <label htmlFor="jobLevel" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <Key className="text-blue-500" />
                                 Job Level
                             </label>
                             <input
                                 id="jobLevel"
                                 name="jobLevel"
                                 type="text"
-                                value={formData.jobLevel}
-                                readOnly
+                                value={formData.jobLevel || selectedJobLevel}
+                                onChange={(e) => setFormData(prev => ({ ...prev, jobLevel: e.target.value }))}
                                 required
-                                className="mt-1 text-black block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200"
+                                className={inputClasses}
+                                placeholder="e.g., Regular, Senior, Manager"
                             />
                         </div>
                     </div>
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-gray-800 mb-3">
+
+                    <div className="space-y-1">
+                        <label htmlFor="email" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                            <Mail className="text-blue-500" />
                             Email
                         </label>
                         <div className="relative">
@@ -358,8 +368,9 @@ export default function Signup() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                className={`mt-1 text-black block w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400 ${emailError ? 'border-red-500' : 'border-gray-300'
+                                className={`mt-1 text-black block w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:border-gray-400 placeholder:text-gray-400 ${emailError ? 'border-red-500' : 'border-gray-300'
                                     }`}
+                                placeholder="you@example.com"
                             />
                             {emailChecking && (
                                 <span className="absolute right-4 top-4 text-gray-500 text-sm font-medium">
@@ -370,25 +381,32 @@ export default function Signup() {
                         {emailError && (
                             <p className="mt-2 text-sm text-red-600 font-medium">{emailError}</p>
                         )}
+                        <p className="mt-1 text-xs text-gray-500">
+                            Allowed domains: santehfeeds.com, gmail.com
+                        </p>
                     </div>
-                    <div>
+
+                    <div className="pt-2">
                         {loading ? (
-                            <div className="w-full flex justify-center py-4 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600">
+                            <div className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-blue-600">
                                 <LoaderButton loading={loading} />
                             </div>
                         ) : (
                             <button
                                 type="submit"
                                 disabled={emailError !== '' || employeeIdError !== ''}
-                                className="w-full flex justify-center py-4 px-4 border-2 border-blue-500 rounded-lg shadow-sm text-sm font-semibold text-blue-700 bg-white hover:bg-blue-50 hover:border-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+                                className="w-full flex items-center justify-center gap-2 py-4 px-6 border-2 border-blue-500 rounded-xl shadow-sm text-sm font-semibold text-blue-700 bg-white hover:bg-blue-50 hover:border-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                             >
-                                Sign up
+                                <Send className="h-4 w-4" />
+                                Submit Account Request
                             </button>
                         )}
-                        <p className="mt-3 text-xs text-gray-600 font-medium text-center">Account will be reviewed after signing up</p>
+                        <p className="mt-3 text-xs text-gray-600 font-medium text-center">
+                            Account will be reviewed after signing up
+                        </p>
                     </div>
                 </form>
             </div>
-        </div >
+        </div>
     )
 }
