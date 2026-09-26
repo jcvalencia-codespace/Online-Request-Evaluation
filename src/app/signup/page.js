@@ -1,13 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import Loader from '../_components/loader';
-import { createUser, checkEmailExists, checkEmployeeIDExists, sendNotification, sendConfirmationEmail } from './_actions';
+import { createUser, checkEmailExists, checkEmployeeIDExists, sendNotification, sendConfirmationEmail, fetchJobTitles } from './_actions';
 import { ToastContainer, toast } from 'react-toastify';
 import LoaderButton from '../_components/loaderButton'
-import { JobTitles, Departments, JobLevel } from '../../utils/jobConstants';
-import { Location } from '../../utils/locationConstants';
 import { generatePassword } from '../../utils/generatePassword';
+import { Location } from '../../utils/locationConstants';
 import { ArrowLeft, User, Mail, MapPin, Briefcase, Users, Key, Send } from 'lucide-react';
 
 export default function Signup() {
@@ -17,6 +16,17 @@ export default function Signup() {
     const [emailChecking, setEmailChecking] = useState(false);
     const [employeeIdChecking, setEmployeeIdChecking] = useState(false);
     const [employeeIdError, setEmployeeIdError] = useState('');
+    const [jobTitles, setJobTitles] = useState([]);
+
+    useEffect(() => {
+        async function loadJobTitles() {
+            const result = await fetchJobTitles();
+            if (result.success) {
+                setJobTitles(result.data);
+            }
+        }
+        loadJobTitles();
+    }, []);
 
     const allowedDomains = ["santehfeeds.com", "gmail.com"];
 
@@ -30,17 +40,14 @@ export default function Signup() {
             jobTitle: title,
         }));
 
-        const job = JobTitles.find(j => j.value === title);
+        const job = jobTitles.find(j => j.value === title);
         if (job) {
-            const jobLevel = JobLevel.find(jl => jl.id === job.jobLevelId)?.value || '';
-            const departmentName = Departments.find(d => d.id === job.departmentId)?.value || '';
-
-            setSelectedDepartment(departmentName);
-            setSelectedJobLevel(jobLevel);
+            setSelectedDepartment(job.department);
+            setSelectedJobLevel(job.jobLevel);
             setFormData(prev => ({
                 ...prev,
-                department: departmentName,
-                jobLevel: jobLevel,
+                department: job.department,
+                jobLevel: job.jobLevel,
             }));
         }
     };
@@ -160,7 +167,7 @@ export default function Signup() {
                         name: formData.fullName,
                         body: 'Your account has been successfully created and is pending approval. You will be notified once it is approved.',
                         buttonText: 'View Dashboard',
-                        buttonUrl: 'http://localhost:3000/login',
+                        buttonUrl: 'https://santeh-erp-web.vercel.app/login',
                         companyEmail: 'j.valencia@santehfeeds.com',
                         companyPhone: '+63 2 8584 4572'
                     });
@@ -306,7 +313,7 @@ export default function Signup() {
                                 placeholder="Start typing to see suggestions..."
                             />
                             <datalist id="job-title-suggestions">
-                                {JobTitles.map((job) => (
+                                {jobTitles.map((job) => (
                                     <option key={job.id} value={job.value} />
                                 ))}
                             </datalist>

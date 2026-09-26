@@ -69,6 +69,16 @@ export async function sendConfirmationEmail(emailData) {
   }
 }
 
+export async function fetchJobTitles() {
+  try {
+    const jobTitles = await UserAccount.fetchJobTitles();
+    return { success: true, data: jobTitles };
+  } catch (error) {
+    console.error('Action error:', error);
+    return { success: false, message: error.message || 'Failed to fetch job titles' };
+  }
+}
+
 export async function sendNotification(title, description, createdBy, employeeId) {
   try {
     // Get all approved MIS department users
@@ -81,7 +91,7 @@ export async function sendNotification(title, description, createdBy, employeeId
 
     // Send notification to each MIS user
     for (const user of misUsers) {
-      const notification = new Notification(title, description, user.EMPLOYEENAME, `/user-approval?id=${employeeId}`);
+      const notification = new Notification(title, description, user.EMPLOYEENAME, `/user-setup/user-approval?id=${employeeId}`);
       await notification.save(createdBy);
     }
 

@@ -31,7 +31,7 @@ export const UserAccount = {
       connection = await connectToDatabase();
       const query = `
         SELECT JOBTITLE, DEPARTMENT, JOBLEVEL
-        FROM [SYSTEM.JOBINFO.1]
+        FROM [SETTINGS.JOBINFO.1]
       `;
 
       const result = await connection.request().query(query);

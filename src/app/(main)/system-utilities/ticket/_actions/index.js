@@ -154,7 +154,7 @@ async function notifyAdminsOfNewTicket(ticketId, ticketData, creatorName) {
                 Please review and address this ticket as needed.`,
           buttonText: 'View Ticket',
           buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/ticket`,
-          companyEmail: 'support@santeh.com',
+          companyEmail: 'j.valencia@santehfeeds.com',
           companyPhone: '+1 (555) 123-4567',
           unsubscribeUrl: '#',
           preferencesUrl: '#'

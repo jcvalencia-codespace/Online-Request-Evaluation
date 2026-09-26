@@ -1,6 +1,6 @@
 # ROADMAP.md - Developer Onboarding Guide & Self-Study Roadmap
 
-Online Request Evaluation System (ORES) is a Next.js 16 procurement management application built for Santeh Feeds Corporation. This document serves as both a **developer onboarding guide** and a **self-study roadmap** for learning the technologies and concepts needed to understand, maintain, and extend the application.
+Santeh Feeds Corporation ERP Web System (ORES) is a Next.js 16 procurement management application built for Santeh Feeds Corporation. This document serves as both a **developer onboarding guide** and a **self-study roadmap** for learning the technologies and concepts needed to understand, maintain, and extend the application.
 
 ---
 
@@ -24,7 +24,7 @@ Online Request Evaluation System (ORES) is a Next.js 16 procurement management a
 
 ### What Is This Project?
 
-The Online Request Evaluation System (ORES) is a web-based procurement management system for Santeh Feeds Corporation. It digitizes and automates the entire procurement workflow — from purchase request creation to receiving goods — with real-time notifications, OTP-based authentication, and role-based access control.
+The Santeh Feeds Corporation ERP Web System (ORES) is a web-based procurement management system for Santeh Feeds Corporation. It digitizes and automates the entire procurement workflow — from purchase request creation to receiving goods — with real-time notifications, OTP-based authentication, and role-based access control.
 
 ### Main Purpose
 

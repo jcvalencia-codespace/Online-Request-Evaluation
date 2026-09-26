@@ -120,7 +120,7 @@ export async function resendOTP(email) {
           name: user.empName || user.EMPLOYEENAME,
           body: `Your new One-Time Password (OTP) is: ${newOtp}. This code expires in 10 minutes.`,
           buttonText: 'Verify Now',
-          buttonUrl: 'http://localhost:3000/OTP?email=' + encodeURIComponent(email),
+          buttonUrl: 'https://santeh-erp-web.vercel.app/OTP?email=' + encodeURIComponent(email),
           companyEmail: 'j.valencia@santehfeeds.com',
           companyPhone: '+63 2 8584 4572',
           subject: 'Your New OTP'

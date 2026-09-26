@@ -76,7 +76,7 @@ export async function loginUser(email, password) {
       name: user.empName,
       body: `<p>Your One-Time Password (OTP) is: <strong style="font-size:24px;color:#2563eb;">${otp}</strong></p><p>This OTP will expire in 10 minutes. Do not share this code with anyone.</p>`,
       buttonText: 'Verify Now',
-      buttonUrl: 'http://localhost:3000/OTP?email=' + encodeURIComponent(email),
+      buttonUrl: 'https://santeh-erp-web.vercel.app/OTP?email=' + encodeURIComponent(email),
       companyEmail: 'j.valencia@santehfeeds.com',
       companyPhone: '+63 2 8584 4572',
       unsubscribeUrl: '#',

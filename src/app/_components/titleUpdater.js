@@ -39,7 +39,7 @@ export default function TitleUpdater() {
 
   // Update document title when count changes
   useEffect(() => {
-    const baseTitle = "Online Requests Evaluation System";
+    const baseTitle = "SFC ERP Web System";
     if (user && unreadCount > 0) {
       document.title = `(${unreadCount}) ${baseTitle}`;
     } else {

@@ -118,7 +118,7 @@ export const ForgotPasswordModel = {
         name,
         body: `Your One-Time Password (OTP) for password reset is: ${otp}. This code expires in 10 minutes.`,
         buttonText: 'Go to Reset Page',
-        buttonUrl: 'http://localhost:3000/forgot-password',
+        buttonUrl: 'https://santeh-erp-web.vercel.app/forgot-password',
         companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+63 2 8584 4572',
         subject: 'Password Reset OTP'

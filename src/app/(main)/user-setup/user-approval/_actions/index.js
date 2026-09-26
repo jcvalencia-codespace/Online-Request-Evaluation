@@ -52,7 +52,7 @@ export async function approveUserAccount(userId, email, name, processedBy) {
             <p style="color: #d97706; margin-top: 16px;"><strong>⚠️ Important:</strong> Please change your password immediately after your first login for security purposes.</p>
             <p><strong>Remarks:</strong> Validated and approved</p>
             <p>If you have any questions, please contact our support team.</p>`,
-            companyEmail: 'contact@santeh.com',
+            companyEmail: 'j.valencia@santehfeeds.com',
             companyPhone: '+1-800-SANTEH',
             unsubscribeUrl: '#',
             preferencesUrl: '#'
@@ -61,7 +61,7 @@ export async function approveUserAccount(userId, email, name, processedBy) {
         // Create notification for the approved user
         try {
             const notification = new Notification(
-                'Welcome to ORES - Online Requests Evaluation System!',
+                'Welcome to ERP WEB - SFC ERP Web System!',
                 `Your account has been approved and is now active.`,
                 name // Send notification to the approved user
             );
@@ -183,8 +183,8 @@ export async function rejectUserAccount(userId, email, name, processedBy, remark
             name: name,
             body: `<p>Your account request has been reviewed and unfortunately has not been approved at this time.</p><p><strong>Remarks:</strong> ${remarks}</p><p>Please contact our support team for more information or to resubmit your request.</p>`,
             buttonText: 'View Dashboard',
-            buttonUrl: 'http://localhost:3000/login',
-            companyEmail: 'contact@santeh.com',
+            buttonUrl: 'https://santeh-erp-web.vercel.app/login',
+            companyEmail: 'j.valencia@santehfeeds.com',
             companyPhone: '+1-800-SANTEH',
             unsubscribeUrl: '#',
             preferencesUrl: '#'

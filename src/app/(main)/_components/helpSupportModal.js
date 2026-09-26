@@ -32,7 +32,7 @@ export default function HelpSupportModal({ isOpen, onClose }) {
                         </h3>
                         <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'} border`}>
                             <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                The SANTEH Online Requests Evaluation System is a comprehensive platform designed to streamline the process of submitting, evaluating, and approving purchase requests and related documentation within the organization.
+                                The SANTEH SFC ERP Web System is a comprehensive platform designed to streamline the process of submitting, evaluating, and approving purchase requests and related documentation within the organization.
                             </p>
 
                             <h4 className={`font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>

@@ -358,7 +358,7 @@ async function notifyReviewersOfNewPR(referenceNo, headerData, detailsData, crea
               Please review this request as soon as possible.`,
         buttonText: 'Review Request',
         buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/procurement/request-evaluation?id=${referenceNo}`,
-        companyEmail: 'support@santeh.com',
+        companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+1 (555) 123-4567',
         unsubscribeUrl: '#',
         preferencesUrl: '#'
@@ -402,7 +402,7 @@ async function notifyApproverOfReviewedPR(referenceNo, pr, reviewerName) {
               Please review and approve this request.`,
         buttonText: 'Approve Request',
         buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/procurement/request-evaluation?id=${referenceNo}`,
-        companyEmail: 'support@santeh.com',
+        companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+1 (555) 123-4567',
         unsubscribeUrl: '#',
         preferencesUrl: '#'
@@ -445,7 +445,7 @@ async function notifyReceiverOfApprovedPR(referenceNo, pr, approverName) {
               Please process this purchase request.`,
         buttonText: 'Process Request',
         buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/purchase-request`,
-        companyEmail: 'support@santeh.com',
+        companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+1 (555) 123-4567',
         unsubscribeUrl: '#',
         preferencesUrl: '#'
@@ -488,7 +488,7 @@ async function notifyRequesterOfReceivedPR(referenceNo, pr, receiverName) {
               The request has been successfully processed.`,
         buttonText: 'View Request',
         buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/purchase-request`,
-        companyEmail: 'support@santeh.com',
+        companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+1 (555) 123-4567',
         unsubscribeUrl: '#',
         preferencesUrl: '#'
@@ -532,7 +532,7 @@ async function notifyRequesterOfRejectedPR(referenceNo, pr, rejectorName, reason
               Please review the rejection reason and resubmit if necessary.`,
         buttonText: 'View Request',
         buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/purchase-request`,
-        companyEmail: 'support@santeh.com',
+        companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+1 (555) 123-4567',
         unsubscribeUrl: '#',
         preferencesUrl: '#'
@@ -579,7 +579,7 @@ async function notifyApproversOfNewPR(referenceNo, headerData, detailsData, crea
               Please review and approve this request as soon as possible.`,
         buttonText: 'Review Request',
         buttonUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/procurement/request-evaluation?id=${referenceNo}`,
-        companyEmail: 'support@santeh.com',
+        companyEmail: 'j.valencia@santehfeeds.com',
         companyPhone: '+1 (555) 123-4567',
         unsubscribeUrl: '#',
         preferencesUrl: '#'

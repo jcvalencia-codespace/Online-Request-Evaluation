@@ -1,4 +1,4 @@
-# Online Request Evaluation System - Project Documentation
+# Santeh Feeds Corporation ERP Web System - Project Documentation
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@
 
 ## Overview
 
-The Online Request Evaluation System (ORES) is a Next.js 16 procurement management application built for Santeh Feeds Corporation. It manages purchase requests, request evaluations, tickets, user accounts, and approvals with real-time notifications, role-based access control, and OTP authentication.
+The Santeh Feeds Corporation ERP Web System (ORES) is a Next.js 16 procurement management application built for Santeh Feeds Corporation. It manages purchase requests, request evaluations, tickets, user accounts, and approvals with real-time notifications, role-based access control, and OTP authentication.
 
 - **Framework**: Next.js 16 with App Router
 - **Server**: Express + Socket.IO merged server (`server.js`)
